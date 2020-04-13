@@ -1,2 +1,8 @@
 
 creditcard.csv
+paper/*
+!paper/paper.tex
+!paper/bibs
+!paper/figures
+!paper/paper.pdf
+!paper/paper.bbl
