@@ -35,9 +35,8 @@ T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \maketitle
 
 \begin{abstract}
- 
+ Credit card fraud is global issue, causing billions of dollars of loss every year\cite{Pozzolo:2015} and requiring companies from the largest conglomerate to the smallest home business to consider the possibility of fraudulent transactions. Because the occurrence of credit card fraud is a binary classification problem with many well-defined input variables, it is suited as an introductory problem for applying machine learning. However, this is not to say that it is an easy problem to solve - the significant class imbalance ratio of valid to fraudulent transactions means that obtaining a useful model is by no means trivial.
 \end{abstract}
-
 
 \begin{IEEEkeywords}
   Machine Learning; Credit Card Fraud
@@ -53,12 +52,26 @@ T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 % \end{itemize}
 
 
-\section{Data}
+\section{Problem Formulation}
+  \subsection{Input and Output}
+  \subsection{The Data}
 
+\section{Approaches and Baselines}
+  For the purposes of this experiment, three machine learning approaches will be evaluated:
+  \begin{itemize}
+    \item \textbf{\emph{k}-means Clustering} is a technique that uses dimensional vector positioning to partition observations into clusters. Conceptually, this technique is similar to creating an \emph{n}-dimensional Voronoi diagram, except that instead of using pre-defined cluster centroids the \emph{k}-means algorithm is used to calculate the optimal Voronoi cells. This partition optimization is achieved by iteratively adjusting the centroids such that the within-cluster variance (squared Euclidean distance between points and their nearest cell centroid) is minimized, and eventually converges to a local optimum. After producing the clusters, classification can be performed by using \emph{k}-nearest neighbors to match points with classification clusters. \emph{k}-means clustering is a simple yet powerful tool for classifying \emph{n}-dimensional input vectors, but may encounter issues with this problem set due to the algorithm's tendency to produce clusters of similar spatial shape, which does not fit easily given the large class imbalance ratio. One possible way to mitigate this issue is to produce several clusters which all correspond to a prediction of 'valid', and only one (or relatively few) which will result in a prediction of 'fraudulent'.
+    \item A \textbf{Support Vector Machine (SVM)}
+    \item A \textbf{Neural Network} with a sigmoidal activation function
+  \end{itemize}
+  In addition to the machine learning techniques employed, a baseline must be established. As this is a \emph{k}-category classification problem, each approach will be compared to two naive baseline predictors:
+  \begin{itemize}
+    \item \textbf{Majority Guess} will always predict that a transaction is legitimate.
+    \item \textbf{Uniform Random Guess} will predict each possible classification category at an equal rate.
+  \end{itemize}
 
-
-
-\section{Ecosystem Evolution}
+\section{Evaluating Performance}
+  Because of the significant class imbalance ratio, evaluating the performance of the different predictors will be performed using the \emph{Area Under the Precision-Recall Curve} (AUPRC)
+\section{Results}
 
 % \begin{figure}
 %   \includegraphics[width=0.5\textwidth]{figures/}

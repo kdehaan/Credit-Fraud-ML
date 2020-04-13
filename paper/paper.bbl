@@ -21,6 +21,10 @@
 \providecommand{\BIBdecl}{\relax}
 \BIBdecl
 
+\bibitem{Pozzolo:2015}
+A.~D. Pozzolo and G.~Bontempi, ``Adaptive machine learning for credit card
+  fraud detection,'' 2015.
+
 \bibitem{Pozzolo:2015-2}
 A.~Dal~Pozzolo, O.~Caelen, R.~Johnson, and G.~Bontempi, ``Calibrating
   probability wit`h undersampling for unbalanced classification,'' 12 2015.
@@ -30,10 +34,6 @@ A.~Dal~Pozzolo, O.~Caelen, Y.-A. Le~Borgne, S.~Waterschoot, and G.~Bontempi,
   ``Learned lessons in credit card fraud detection from a practitioner
   perspective,'' \emph{Expert Systems with Applications}, vol.~41, p.
   4915–4928, 08 2014.
-
-\bibitem{Pozzolo:2015}
-A.~D. Pozzolo and G.~Bontempi, ``Adaptive machine learning for credit card
-  fraud detection,'' 2015.
 
 \bibitem{Pozzolo:2017}
 A.~Dal~Pozzolo, G.~Boracchi, O.~Caelen, C.~Alippi, and G.~Bontempi, ``Credit
