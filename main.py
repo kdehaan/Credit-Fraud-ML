@@ -8,28 +8,28 @@ from sklearn import svm
 from sklearn import metrics
 from sklearn import dummy
 import matplotlib.pyplot as plt
+from sklearn import preprocessing
 
 
 
 def readCSV():
     
-    with open('winequality-red.csv') as f:
+    with open('hotel_bookings.csv') as f:
         data = list(csv.reader(f, delimiter=","))
 
     np.random.seed(314)
 
     titles = data[0]
-    data = np.array(data[1:], np.float)
-
-    # np.random.shuffle(data)
-
-    # testTrainThreshold = int(len(data)*0.8)
-    # trainValThreshold = int(testTrainThreshold*0.8)
-
-    # train_data, test_data = np.array(data[:testTrainThreshold], np.float), np.array(data[testTrainThreshold:], np.float)
-    # train_data, val_data = train_data[:trainValThreshold], train_data[trainValThreshold:]
+    data = np.array(data[1:])
+    
 
     end_idx = data.shape[1]-1
+    for i in range(end_idx):
+        le = preprocessing.LabelEncoder()
+        le.fit(data[:,i])
+        data[:,i] = le.transform(data[:,i])
+
+    data = data.astype(np.float)
 
     x_data, t_data = data[:, 0:end_idx], data[:, end_idx]
     
@@ -42,20 +42,22 @@ def readCSV():
     x_train, x_val, t_train, t_val = train_test_split(x_train, t_train, test_size=0.2, random_state=43)
     print(np.unique(t_val, return_counts=True))
     print(np.unique(t_train, return_counts=True))
+
+    # print("sample", x_data[:3], t_data[:3])
     return x_train, t_train, x_test, t_test, x_val, t_val, titles
 
 
 def main():
     x_train, t_train, x_test, t_test, x_val, t_val, _ = readCSV()
 
-    svm_classifier = get_svm(x_train, t_train, x_val, t_val)
-    print("SVM tested at", validate_cross(svm_classifier, x_test, t_test))
+    # svm_classifier = get_svm(x_train, t_train, x_val, t_val)
+    # print("SVM tested at", validate_cross(svm_classifier, x_test, t_test))
 
-    # sgd_classifier = get_sgd(x_train, t_train, x_val, t_val)
-    # print("SGD tested at", validate_cross(sgd_classifier, x_test, t_test))
+    sgd_classifier = get_sgd(x_train, t_train, x_val, t_val)
+    print("SGD tested at", validate_cross(sgd_classifier, x_test, t_test))
 
-    # mlp_classifier = get_mlp(x_train, t_train, x_val, t_val)
-    # print("MLP tested at", validate_cross(mlp_classifier, x_test, t_test))
+    mlp_classifier = get_mlp(x_train, t_train, x_val, t_val)
+    print("MLP tested at", validate_cross(mlp_classifier, x_test, t_test))
 
     majority_guess = get_majority(x_train, t_train)
     uniform_guess = get_uniform(x_train, t_train)
