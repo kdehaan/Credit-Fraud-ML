@@ -8,7 +8,7 @@ from sklearn.model_selection import cross_val_score, train_test_split, GridSearc
 from sklearn import svm
 from sklearn import metrics
 from sklearn import dummy
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, r2_score
 import matplotlib.pyplot as plt
 from sklearn import preprocessing
 
@@ -98,7 +98,7 @@ def main():
 
 def param_sel(x, y, model, params):
     print("Running GridSearch on hyperparameters:", params)
-    grid_search = RandomizedSearchCV( model, param_distributions=params, n_jobs=-1, cv=3)
+    grid_search = GridSearchCV( model, param_grid=params, n_jobs=-1, cv=5, scoring="roc_auc")
     grid_search.fit(x, y)
     grid_search.best_params_
     return grid_search.best_params_
@@ -122,11 +122,20 @@ def get_sgd(x_train, t_train, x_val, t_val, search=False):
 
 def get_mlp(x_train, t_train, x_val, t_val, search=False):
     # {'activation': 'relu', 'alpha': 0.1, 'learning_rate': 'constant', 'solver': 'adam'}
+    # {'solver': 'adam', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,), 'alpha': 0.06, 'activation': 'tanh'}
+# mlp validated at (array([0.8940068 , 0.78879874, 0.71866004, 0.99057592, 0.74764398]), 0.9286105369755633)
+# MLP tested at (array([0.72152429, 0.7118928 , 0.91457286, 0.71602094, 0.70136126]), 0.9242268552514312)
+    # mlp validated at (array([0.8940068 , 0.78879874, 0.71866004, 0.99057592, 0.74764398]), 0.9833533999895304)
+    # MLP tested at (array([0.72152429, 0.7118928 , 0.91457286, 0.71602094, 0.70136126]), 0.9823687075969512)
+
+    # {'activation': 'relu', 'alpha': 0.01, 'hidden_layer_sizes': (100,), 'learning_rate': 'adaptive', 'solver': 'adam'}
+    # mlp validated at (array([0.98953154, 0.99188694, 0.99188694, 0.98848168, 0.98612565]), 0.9537539956508365)
+    # MLP tested at (array([0.98680905, 0.98848409, 0.98911223, 0.98910995, 0.99036649]), 0.9467248198442366)
     if search:
 
         mlp_params = param_sel(x_train, t_train, MLPClassifier(max_iter=1000), {
-            'alpha': [ 0.001, 0.006, 0.01, 0.06, 0.1],
-            'hidden_layer_sizes': [(50,50,50), (50,100,50), (100,)],
+            'alpha': [ 0.01, 0.06, 0.1, 0.6],
+            'hidden_layer_sizes': [(20,20,10), (100,)],
             'activation': ['relu', 'tanh'],
             'solver': ['sgd', 'adam'],
             'learning_rate': ['constant', 'adaptive'], })
@@ -155,7 +164,7 @@ def get_uniform(x_train, t_train):
 #     return auprc
 
 def validate_cross(classifier, x, y):
-    return (cross_val_score(classifier, x, y, cv=5), accuracy_score(y, classifier.predict(x)))
+    return (cross_val_score(classifier, x, y, cv=5), r2_score(y, classifier.predict(x)))
 
 if __name__ == "__main__":
     main()
