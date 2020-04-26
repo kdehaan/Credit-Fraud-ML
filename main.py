@@ -67,8 +67,8 @@ def main():
     sgd_classifier = get_sgd(x_train, t_train, x_val, t_val, search)
     print("SGD tested at", validate_cross(sgd_classifier, x_test, t_test))
 
-    mlp_classifier = get_mlp(x_train, t_train, x_val, t_val, search)
-    print("MLP tested at", validate_cross(mlp_classifier, x_test, t_test))
+    # mlp_classifier = get_mlp(x_train, t_train, x_val, t_val, search)
+    # print("MLP tested at", validate_cross(mlp_classifier, x_test, t_test))
 
     majority_guess = get_majority(x_train, t_train)
     uniform_guess = get_uniform(x_train, t_train)
@@ -98,17 +98,20 @@ def main():
 
 def param_sel(x, y, model, params):
     print("Running GridSearch on hyperparameters:", params)
-    grid_search = GridSearchCV( model, param_grid=params, n_jobs=-1, cv=5, scoring="roc_auc")
+    grid_search = GridSearchCV( model, param_grid=params, n_jobs=2, cv=5, scoring="roc_auc")
     grid_search.fit(x, y)
     grid_search.best_params_
     return grid_search.best_params_
 
 def get_sgd(x_train, t_train, x_val, t_val, search=False):
     # {'alpha': 0.1, 'loss': 'hinge', 'penalty': 'l2'}
+    # params {'alpha': 0.1, 'loss': 'squared_hinge', 'penalty': 'l2'}
+    # sgd validated at (array([0.83904737, 0.77597488, 0.63281863, 0.64005236, 0.78926702]), 0.5431523356769534)
+    # SGD tested at (array([0.5211474 , 0.75460637, 0.42106365, 0.84335079, 0.82848168]), 0.5295225644352521)
     if search:
         sgd_params = param_sel(x_train, t_train, SGDClassifier(max_iter=2000), {
-            'alpha': [0.0001, 0.001, 0.01, 0.1, 1],
-            'loss': ['hinge', 'log', 'squared_hinge',],
+            'alpha': [ 0.001, 0.006, 0.01, 0.06, 0.1, 0.6, 1],
+            'loss': ['hinge', 'log', 'squared_hinge', 'modified_huber'],
             'penalty': ['l2'] })
     else:
         sgd_params = {'alpha': 0.1, 'loss': 'hinge', 'penalty': 'l2'}
@@ -140,7 +143,7 @@ def get_mlp(x_train, t_train, x_val, t_val, search=False):
             'solver': ['sgd', 'adam'],
             'learning_rate': ['constant', 'adaptive'], })
     else:
-        mlp_params = {'activation': 'relu', 'alpha': 0.6, 'learning_rate': 'adaptive', 'solver': 'adam', 'hidden_layer_sizes': (20,20,10), 'verbose': True}
+        mlp_params = {'activation': 'relu', 'alpha': 0.01, 'learning_rate': 'adaptive', 'solver': 'adam', 'hidden_layer_sizes': (100,)}
 
     print("MLP params:", mlp_params)
     mlp_classifier = MLPClassifier(**mlp_params, max_iter=6000)
