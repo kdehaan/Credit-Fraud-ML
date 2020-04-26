@@ -131,7 +131,7 @@ def get_mlp(x_train, t_train, x_val, t_val, search=False):
             'solver': ['sgd', 'adam'],
             'learning_rate': ['constant', 'adaptive'], })
     else:
-        mlp_params = {'activation': 'relu', 'alpha': 0.6, 'learning_rate': 'adaptive', 'solver': 'adam', 'hidden_layer_sizes': (20,20,10), 'verbose': True, "n_it"}
+        mlp_params = {'activation': 'relu', 'alpha': 0.6, 'learning_rate': 'adaptive', 'solver': 'adam', 'hidden_layer_sizes': (20,20,10), 'verbose': True}
 
     print("MLP params:", mlp_params)
     mlp_classifier = MLPClassifier(**mlp_params, max_iter=6000)
