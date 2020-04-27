@@ -49,8 +49,8 @@ T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \section{Problem Formulation}
   Simply put, the goal of each of the machine learning models used is to take in a set of parameters that can be known before the date of arrival, and make a binary prediction about whether the reservation is going to be cancelled.
   \subsection{The Data}
-    The data set used is adapted from one created by Antonio, de Almeida and Nunes\cite{Antonio2019} that has been cleaned and formatted by Mock and Bichat\cite{mock_bichat}. It includes bookings from two locations - a city hotel and a resort hotel. Data columns include the lead time between booking and the date of stay, the date of arrival, the duration of the stay, the volume of adults, children and babies, if the guest is a repeat customer, the number of previous cancellations and amount of special requests made, among others.
-  \subsection{Input and Output}
+    The data set used is adapted from one created by Antonio, de Almeida and Nunes\cite{Antonio2019} that has been cleaned and formatted by Mock and Bichat\cite{mock_bichat}. It includes bookings from two locations - a city hotel and a resort hotel. Data columns include the lead time between booking and the date of stay, the date of arrival, the duration of the stay, the volume of adults, children and babies, if the guest is a repeat customer, the number of previous cancellations and amount of special requests made, among others. 66\% of the rows are taken from the city hotel, while the remaining 34\% are from the resort hotel. There are 44224 (37.06\%) examples of cancelled bookings and 75116 (62.94\%) instances where the booking went through, for a total of 11934 rows. Some columns have been altered to preserve anonymity\cite{Antonio2019}.
+  
   
 
 \section{Approaches and Baselines}
@@ -67,7 +67,9 @@ T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
   \end{itemize}
 
 \section{Evaluating Performance}
-  Because of the significant class imbalance ratio, evaluating the performance of the different predictors will be performed using the \emph{Area Under the Precision-Recall Curve} (AUPRC)
+ While the relatively low class imbalance of this binary classification problem means that raw accuracy is still meaningful, it is still preferable to find a different metric to better represent the trade-off between precision and recall. Towards this end, the models are evaluated primarily using the \emph{Area Under the Receiver Operating Characteristic Curve} (ROC AUC), a tool used specifically for determining the predictive ability of a binary classifier as the threshold between precision and recall is varied\cite{Fawcett2006}. For this metric, a perfect score is 1 while the worst possible score is 0.5 (this is because in a binary classifier, being 0\% correct is equivalent to being 100\% correct). In addition to the ROC AUC, the \emph{f\textsubscript{1}} score\cite{rijsbergen_1995} and raw accuracy are also included in the event that the reader is more comfortable with their relative values.
+ 
+ Note that both of the naive predictors (\emph{majority guess} and \emph{uniform random guess}) will produce an ROC AUC score of very nearly 0.5, and an \emph{f\textsubscript{1}} score of 
 \section{Results}
 
 % \begin{figure}

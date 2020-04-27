@@ -9,7 +9,7 @@ from sklearn.model_selection import cross_val_score, train_test_split, GridSearc
 from sklearn import svm
 from sklearn import metrics
 from sklearn import dummy
-from sklearn.metrics import accuracy_score, r2_score, roc_auc_score, roc_curve, auc, precision_recall_curve
+from sklearn.metrics import accuracy_score, f1_score, roc_auc_score, roc_curve, auc, precision_recall_curve
 import matplotlib.pyplot as plt
 from sklearn import preprocessing
 
@@ -256,10 +256,10 @@ def get_uniform(x_train, t_train):
 #     return auprc
 
 def validate(classifier, x, y):
-    score_r2 = r2_score(y, classifier.predict(x))
+    score_f1 = f1_score(y, classifier.predict(x))
     score_accuracy = classifier.score(x, y)
     score_auc = roc_auc_score(y, classifier.predict(x))
-    return f'r2_score: {score_r2}, accuracy: {score_accuracy}, ROC AUC: {score_auc}'
+    return f'f1_score: {score_f1}, accuracy: {score_accuracy}, ROC AUC: {score_auc}'
 
 if __name__ == "__main__":
     main()

@@ -43,6 +43,17 @@ A.~B. Thomas~Mock, ``\#tidytuesday: Hotels,'' feb 2019. [Online]. Available:
   \url{https://www.kaggle.com/jessemostipak/hotel-booking-demand}
 \BIBentrySTDinterwordspacing
 
+\bibitem{Fawcett2006}
+\BIBentryALTinterwordspacing
+T.~Fawcett, ``An introduction to {ROC} analysis,'' \emph{Pattern Recognition
+  Letters}, vol.~27, no.~8, pp. 861--874, Jun. 2006. [Online]. Available:
+  \url{https://doi.org/10.1016/j.patrec.2005.10.010}
+\BIBentrySTDinterwordspacing
+
+\bibitem{rijsbergen_1995}
+C.~J.~v. Rijsbergen, \emph{Information retrieval}.\hskip 1em plus 0.5em minus
+  0.4em\relax s.n., 1995.
+
 \bibitem{scikit-learn}
 F.~Pedregosa, G.~Varoquaux, A.~Gramfort, V.~Michel, B.~Thirion, O.~Grisel,
   M.~Blondel, P.~Prettenhofer, R.~Weiss, V.~Dubourg, J.~Vanderplas, A.~Passos,
