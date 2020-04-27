@@ -5,11 +5,11 @@ import sys
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.linear_model import SGDClassifier
 from sklearn.neural_network import MLPClassifier
-from sklearn.model_selection import cross_val_score, train_test_split, GridSearchCV, RandomizedSearchCV
+from sklearn.model_selection import cross_val_score, train_test_split, GridSearchCV, RandomizedSearchCV, learning_curve
 from sklearn import svm
 from sklearn import metrics
 from sklearn import dummy
-from sklearn.metrics import accuracy_score, r2_score
+from sklearn.metrics import accuracy_score, r2_score, roc_auc_score, roc_curve, auc, precision_recall_curve
 import matplotlib.pyplot as plt
 from sklearn import preprocessing
 
@@ -56,6 +56,7 @@ def readCSV():
 def main():
     search = False
     all_models = True
+    save_plots = False
     subset = []
     if len(sys.argv) > 0:
         if "-s" in sys.argv:
@@ -68,6 +69,8 @@ def main():
                 subset.append("sgd")
             if "-mlp" in sys.argv:
                 subset.append("mlp")
+        if "-plot" in sys.argv:
+            save_plots = True
             
 
     
@@ -77,21 +80,87 @@ def main():
 
     if all_models or 'knn' in subset:
         knn_classifier = get_knn(x_train, t_train, x_val, t_val, search)
-        print("KNN tested at", validate_cross(knn_classifier, x_test, t_test))
+        print("KNN tested at", validate(knn_classifier, x_test, t_test))
+        if (save_plots):
+            plot_auc("KNN", t_test, knn_classifier.predict(x_test))
+            plot_prec_rec("KNN", t_test, knn_classifier.predict(x_test))
+            # plot_learning_curve(knn_classifier, "KNN", x_train, t_train)
 
     if all_models or 'sgd' in subset:    
         sgd_classifier = get_sgd(x_train, t_train, x_val, t_val, search)
-        print("SGD tested at", validate_cross(sgd_classifier, x_test, t_test))
+        print("SGD tested at", validate(sgd_classifier, x_test, t_test))
+        if (save_plots):
+            plot_auc("SGD", t_test, sgd_classifier.predict(x_test))
+            plot_prec_rec("SGD", t_test, sgd_classifier.predict(x_test))
+            # plot_learning_curve(sgd_classifier, "SGD", x_train, t_train)
 
     if all_models or 'mlp' in subset:   
         mlp_classifier = get_mlp(x_train, t_train, x_val, t_val, search)
-        print("MLP tested at", validate_cross(mlp_classifier, x_test, t_test))
+        print("MLP tested at", validate(mlp_classifier, x_test, t_test))
+        if (save_plots):
+            plot_auc("MLP", t_test, mlp_classifier.predict(x_test))
+            plot_prec_rec("MLP", t_test, mlp_classifier.predict(x_test))
+            # plot_learning_curve(mlp_classifier, "MLP", x_train, t_train)
 
     majority_guess = get_majority(x_train, t_train)
     uniform_guess = get_uniform(x_train, t_train)
 
-    print("Majority tested at", validate_cross(majority_guess, x_test, t_test))
-    print("Uniform tested at", validate_cross(uniform_guess, x_test, t_test))
+    print("Majority tested at", validate(majority_guess, x_test, t_test))
+    print("Uniform tested at", validate(uniform_guess, x_test, t_test))
+
+
+def plot_auc(name, y_true, y_pred):
+    fpr, tpr, _ = roc_curve(y_true, y_pred)
+    auc_val = roc_auc_score(y_true, y_pred)
+    plt.figure()
+    plt.plot(fpr, tpr, label='ROC Curve (area = %0.2f)' % auc_val)
+    plt.xlabel("False Positive Rate")
+    plt.ylabel("True Positive Rate")
+    plt.title(f'{name} Receiver Operating Characteristic')
+    plt.legend(loc="lower right")
+    plt.savefig(f'{name}_roc_auc.png')
+
+def plot_prec_rec(name, y_true, y_pred):
+    precision, recall, _ = precision_recall_curve(y_true, y_pred)
+    auc_val = auc(recall, precision)
+    plt.figure()
+    plt.plot(recall, precision, label='Area under the curve: %0.2f' % auc_val)
+    plt.xlabel("Recall")
+    plt.ylabel("Precision")
+    plt.title(f'{name} Precision Recall Curve')
+    plt.legend(loc="lower right")
+    plt.savefig(f'{name}_prec_rec.png')
+
+# adapted from https://scikit-learn.org/stable/auto_examples/model_selection/plot_learning_curve.html
+def plot_learning_curve(estimator, name, x, y, train_sizes=np.linspace(0.1, 1.0, 5)):
+    train_sizes, train_scores, test_scores, fit_times, _ = \
+        learning_curve(estimator, x, y, train_sizes=train_sizes, return_times=True)
+
+    train_scores_mean = np.mean(train_scores, axis=1)
+    train_scores_std = np.std(train_scores, axis=1)
+    test_scores_mean = np.mean(test_scores, axis=1)
+    test_scores_std = np.std(test_scores, axis=1)
+    fit_times_mean = np.mean(fit_times, axis=1)
+    # fit_times_std = np.std(fit_times, axis=1)
+
+    plt.figure()
+    plt.title(f'{name} Learning Curves')
+    plt.fill_between(train_sizes, train_scores_mean - train_scores_std, train_scores_mean + train_scores_std, alpha=0.1, color='r')
+    plt.fill_between(train_sizes, test_scores_mean - test_scores_std, test_scores_mean + test_scores_std, alpha=0.1, color='b')
+    plt.plot(train_sizes, train_scores_mean, '-o', label="Training Score", color='r')
+    plt.plot(train_sizes, test_scores_mean, '-o', label="Cross-Validation Score", color='b')
+    plt.xlabel("Training Examples")
+    plt.ylabel("Score")
+    plt.legend(loc="best")
+    plt.savefig(f'{name}_learning_curve.png')
+
+    plt.figure()
+    plt.title(f'{name} Model Performance')
+    plt.fill_between(fit_times_mean, test_scores_mean - test_scores_std, test_scores_mean + test_scores_std, alpha=0.1 )
+    plt.plot(fit_times_mean, test_scores_mean, '-o')
+    plt.xlabel("Fit Times")
+    plt.ylabel("Score")
+    plt.savefig(f'{name}_model_performance.png')
 
 
 
@@ -104,6 +173,8 @@ def param_sel(x, y, model, params):
 
 
 def get_knn(x_train, t_train, x_val, t_val, search=False):
+    # KNN params: {'algorithm': 'kd_tree', 'leaf_size': 30, 'n_neighbors': 20, 'p': 1, 'weights': 'distance'}
+    # KNN tested at (array([0.88484087, 0.88107203, 0.89007538, 0.88628272, 0.89256545]), 0.6603707265070087, 0.9209732808442919)
     if search:
         knn_params = param_sel(x_train, t_train, KNeighborsClassifier(), {
             'n_neighbors': [ 3, 5, 10, 15, 20],
@@ -112,12 +183,13 @@ def get_knn(x_train, t_train, x_val, t_val, search=False):
             'p': [1, 2],
             'leaf_size': [25, 30, 35] })
     else:
-        knn_params = {'n_neighbors': 3, 'weights': 'distance', 'algorithm': 'auto', 'p': 1, 'leaf_size': 30}
+        knn_params = {'algorithm': 'kd_tree', 'leaf_size': 30, 'n_neighbors': 20, 'p': 1, 'weights': 'distance'}
 
-    print("KNN params:", knn_params)
+    
     knn_classifier = KNeighborsClassifier(**knn_params)
     knn_classifier.fit(x_train, t_train)
-    # print("knn validated at", validate_cross(knn_classifier, x_val, t_val))
+    print("KNN params:", knn_classifier.get_params())
+    print("KNN validated at", validate(knn_classifier, x_val, t_val))
     return knn_classifier
 
 def get_sgd(x_train, t_train, x_val, t_val, search=False):
@@ -133,10 +205,11 @@ def get_sgd(x_train, t_train, x_val, t_val, search=False):
     else:
         sgd_params = {'alpha': 0.1, 'loss': 'hinge', 'penalty': 'l2'}
 
-    print("SGD params:", sgd_params)
+
     sgd_classifier = SGDClassifier(**sgd_params, max_iter=2000)
     sgd_classifier.fit(x_train, t_train)
-    # print("sgd validated at", validate_cross(sgd_classifier, x_val, t_val))
+    print("SGD params:", sgd_classifier.get_params())
+    print("SGD validated at", validate(sgd_classifier, x_val, t_val))
     return sgd_classifier
 
 
@@ -162,10 +235,10 @@ def get_mlp(x_train, t_train, x_val, t_val, search=False):
     else:
         mlp_params = {'activation': 'relu', 'alpha': 0.01, 'learning_rate': 'adaptive', 'solver': 'adam', 'hidden_layer_sizes': (100,)}
 
-    print("MLP params:", mlp_params)
     mlp_classifier = MLPClassifier(**mlp_params, max_iter=6000)
     mlp_classifier.fit(x_train, t_train)
-    # print("mlp validated at", validate_cross(mlp_classifier, x_val, t_val))
+    print("MLP params:", mlp_classifier.get_params())
+    print("MLP validated at", validate(mlp_classifier, x_val, t_val))
     return mlp_classifier
 
 def get_majority(x_train, t_train):
@@ -183,8 +256,11 @@ def get_uniform(x_train, t_train):
 #     auprc = metrics.average_precision_score(output, predicted)
 #     return auprc
 
-def validate_cross(classifier, x, y):
-    return (cross_val_score(classifier, x, y, cv=5), r2_score(y, classifier.predict(x)), classifier.score(x, y))
+def validate(classifier, x, y):
+    score_r2 = r2_score(y, classifier.predict(x))
+    score_accuracy = classifier.score(x, y)
+    score_auc = roc_auc_score(y, classifier.predict(x))
+    return f'r2_score: {score_r2}, accuracy: {score_accuracy}, ROC AUC: {score_auc}'
 
 if __name__ == "__main__":
     main()
