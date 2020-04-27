@@ -2,6 +2,7 @@ import numpy as np
 import csv
 import sys
 # import sklearn
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.linear_model import SGDClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.model_selection import cross_val_score, train_test_split, GridSearchCV, RandomizedSearchCV
@@ -56,19 +57,34 @@ def readCSV():
 
 def main():
     search = False
+    all_models = True
+    subset = []
     if len(sys.argv) > 0:
         if "-s" in sys.argv:
             search = True
+        if "-notall" in sys.argv:
+            all_models = False
+            if "-knn" in sys.argv:
+                subset.append("knn")
+            if "-sgd" in sys.argv:
+                subset.append("sgd")
+            if "-mlp" in sys.argv:
+                subset.append("mlp")
+            
+
+    
     x_train, t_train, x_test, t_test, x_val, t_val, _ = readCSV()
 
     # svm_classifier = get_svm(x_train, t_train, x_val, t_val)
     # print("SVM tested at", validate_cross(svm_classifier, x_test, t_test))
 
-    sgd_classifier = get_sgd(x_train, t_train, x_val, t_val, search)
-    print("SGD tested at", validate_cross(sgd_classifier, x_test, t_test))
+    if all_models or 'sgd' in subset:    
+        sgd_classifier = get_sgd(x_train, t_train, x_val, t_val, search)
+        print("SGD tested at", validate_cross(sgd_classifier, x_test, t_test))
 
-    # mlp_classifier = get_mlp(x_train, t_train, x_val, t_val, search)
-    # print("MLP tested at", validate_cross(mlp_classifier, x_test, t_test))
+    if all_models or 'mlp' in subset:   
+        mlp_classifier = get_mlp(x_train, t_train, x_val, t_val, search)
+        print("MLP tested at", validate_cross(mlp_classifier, x_test, t_test))
 
     majority_guess = get_majority(x_train, t_train)
     uniform_guess = get_uniform(x_train, t_train)
@@ -77,24 +93,6 @@ def main():
     print("Uniform tested at", validate_cross(uniform_guess, x_test, t_test))
 
 
-# def get_svm(x_train, t_train, x_val, t_val):
-
-#     svm_params = svc_param_sel(x_train, t_train, 5)
-#     print("svm params", svm_params)
-#     svm_classifier = svm.SVC()
-#     svm_classifier.fit(x_train, t_train)
-#     print("svm validated at", validate_cross(svm_classifier, x_val, t_val))
-#     return svm_classifier
-
-# def svc_param_sel(x, y, nfolds):
-#     Cs = [0.001, 0.01, 0.1, 1, 10]
-#     gammas = [0.001, 0.01, 0.1, 1]
-#     param_grid = {'C': Cs, 'gamma' : gammas}
-#     grid_search = GridSearchCV(svm.SVC(kernel='rbf'), param_grid, cv=nfolds)
-#     grid_search.fit(x, y)
-#     grid_search.best_params_
-#     return grid_search.best_params_
-
 
 def param_sel(x, y, model, params):
     print("Running GridSearch on hyperparameters:", params)
@@ -102,6 +100,22 @@ def param_sel(x, y, model, params):
     grid_search.fit(x, y)
     grid_search.best_params_
     return grid_search.best_params_
+
+
+def get_knn(x_train, t_train, x_val, t_val, search=False):
+    if search:
+        knn_params = param_sel(x_train, t_train, SGDClassifier(max_iter=2000), {
+            'alpha': [ 0.001, 0.006, 0.01, 0.06, 0.1, 0.6, 1],
+            'loss': ['hinge', 'log', 'squared_hinge', 'modified_huber'],
+            'penalty': ['l2'] })
+    else:
+        knn_params = {'alpha': 0.1, 'loss': 'hinge', 'penalty': 'l2'}
+
+    print("params", knn_params)
+    sgd_classifier = SGDClassifier(**knn_params, max_iter=2000)
+    sgd_classifier.fit(x_train, t_train)
+    print("sgd validated at", validate_cross(sgd_classifier, x_val, t_val))
+    return sgd_classifier
 
 def get_sgd(x_train, t_train, x_val, t_val, search=False):
     # {'alpha': 0.1, 'loss': 'hinge', 'penalty': 'l2'}
@@ -126,8 +140,8 @@ def get_sgd(x_train, t_train, x_val, t_val, search=False):
 def get_mlp(x_train, t_train, x_val, t_val, search=False):
     # {'activation': 'relu', 'alpha': 0.1, 'learning_rate': 'constant', 'solver': 'adam'}
     # {'solver': 'adam', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,), 'alpha': 0.06, 'activation': 'tanh'}
-# mlp validated at (array([0.8940068 , 0.78879874, 0.71866004, 0.99057592, 0.74764398]), 0.9286105369755633)
-# MLP tested at (array([0.72152429, 0.7118928 , 0.91457286, 0.71602094, 0.70136126]), 0.9242268552514312)
+    # mlp validated at (array([0.8940068 , 0.78879874, 0.71866004, 0.99057592, 0.74764398]), 0.9286105369755633)
+    # MLP tested at (array([0.72152429, 0.7118928 , 0.91457286, 0.71602094, 0.70136126]), 0.9242268552514312)
     # mlp validated at (array([0.8940068 , 0.78879874, 0.71866004, 0.99057592, 0.74764398]), 0.9833533999895304)
     # MLP tested at (array([0.72152429, 0.7118928 , 0.91457286, 0.71602094, 0.70136126]), 0.9823687075969512)
 
@@ -167,7 +181,7 @@ def get_uniform(x_train, t_train):
 #     return auprc
 
 def validate_cross(classifier, x, y):
-    return (cross_val_score(classifier, x, y, cv=5), r2_score(y, classifier.predict(x)))
+    return (cross_val_score(classifier, x, y, cv=5), r2_score(y, classifier.predict(x)), classifier.score(x, y))
 
 if __name__ == "__main__":
     main()
