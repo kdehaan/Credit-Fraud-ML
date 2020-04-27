@@ -36,20 +36,18 @@ def readCSV():
             data[:,i] = le.transform(data[:,i])
         
     data = data.astype(np.float64)
-
-    print("data", data[:3])
+    # print("data", data[:3])
 
     x_data, t_data = data[:, 0:end_idx], data[:, end_idx]
-    
     # x_val, t_val = val_data[:, 0:end_idx], val_data[:, end_idx]
     # x_test, t_test = test_data[:, 0:end_idx], test_data[:, end_idx]
 
     x_train, x_test, t_train, t_test = train_test_split(x_data, t_data, test_size=0.2, random_state=34)
-    print(np.unique(t_test, return_counts=True))
+    # print(np.unique(t_test, return_counts=True))
 
     x_train, x_val, t_train, t_val = train_test_split(x_train, t_train, test_size=0.2, random_state=43)
-    print(np.unique(t_val, return_counts=True))
-    print(np.unique(t_train, return_counts=True))
+    # print(np.unique(t_val, return_counts=True))
+    # print(np.unique(t_train, return_counts=True))
 
     # print("sample", x_data[:3], t_data[:3])
     return x_train, t_train, x_test, t_test, x_val, t_val, titles
@@ -75,8 +73,11 @@ def main():
     
     x_train, t_train, x_test, t_test, x_val, t_val, _ = readCSV()
 
-    # svm_classifier = get_svm(x_train, t_train, x_val, t_val)
-    # print("SVM tested at", validate_cross(svm_classifier, x_test, t_test))
+
+
+    if all_models or 'knn' in subset:
+        knn_classifier = get_knn(x_train, t_train, x_val, t_val, search)
+        print("KNN tested at", validate_cross(knn_classifier, x_test, t_test))
 
     if all_models or 'sgd' in subset:    
         sgd_classifier = get_sgd(x_train, t_train, x_val, t_val, search)
@@ -104,18 +105,20 @@ def param_sel(x, y, model, params):
 
 def get_knn(x_train, t_train, x_val, t_val, search=False):
     if search:
-        knn_params = param_sel(x_train, t_train, SGDClassifier(max_iter=2000), {
-            'alpha': [ 0.001, 0.006, 0.01, 0.06, 0.1, 0.6, 1],
-            'loss': ['hinge', 'log', 'squared_hinge', 'modified_huber'],
-            'penalty': ['l2'] })
+        knn_params = param_sel(x_train, t_train, KNeighborsClassifier(), {
+            'n_neighbors': [ 3, 5, 10, 15, 20],
+            'weights': ['uniform', 'distance'],
+            'algorithm': ['ball_tree', 'kd_tree', 'auto'],
+            'p': [1, 2],
+            'leaf_size': [25, 30, 35] })
     else:
-        knn_params = {'alpha': 0.1, 'loss': 'hinge', 'penalty': 'l2'}
+        knn_params = {'n_neighbors': 3, 'weights': 'distance', 'algorithm': 'auto', 'p': 1, 'leaf_size': 30}
 
-    print("params", knn_params)
-    sgd_classifier = SGDClassifier(**knn_params, max_iter=2000)
-    sgd_classifier.fit(x_train, t_train)
-    print("sgd validated at", validate_cross(sgd_classifier, x_val, t_val))
-    return sgd_classifier
+    print("KNN params:", knn_params)
+    knn_classifier = KNeighborsClassifier(**knn_params)
+    knn_classifier.fit(x_train, t_train)
+    # print("knn validated at", validate_cross(knn_classifier, x_val, t_val))
+    return knn_classifier
 
 def get_sgd(x_train, t_train, x_val, t_val, search=False):
     # {'alpha': 0.1, 'loss': 'hinge', 'penalty': 'l2'}
@@ -130,10 +133,10 @@ def get_sgd(x_train, t_train, x_val, t_val, search=False):
     else:
         sgd_params = {'alpha': 0.1, 'loss': 'hinge', 'penalty': 'l2'}
 
-    print("params", sgd_params)
+    print("SGD params:", sgd_params)
     sgd_classifier = SGDClassifier(**sgd_params, max_iter=2000)
     sgd_classifier.fit(x_train, t_train)
-    print("sgd validated at", validate_cross(sgd_classifier, x_val, t_val))
+    # print("sgd validated at", validate_cross(sgd_classifier, x_val, t_val))
     return sgd_classifier
 
 
@@ -162,7 +165,7 @@ def get_mlp(x_train, t_train, x_val, t_val, search=False):
     print("MLP params:", mlp_params)
     mlp_classifier = MLPClassifier(**mlp_params, max_iter=6000)
     mlp_classifier.fit(x_train, t_train)
-    print("mlp validated at", validate_cross(mlp_classifier, x_val, t_val))
+    # print("mlp validated at", validate_cross(mlp_classifier, x_val, t_val))
     return mlp_classifier
 
 def get_majority(x_train, t_train):
