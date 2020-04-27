@@ -1,15 +1,15 @@
 # Fdb version 3
-["bibtex paper"] 1587975192 "paper.aux" "paper.bbl" "paper" 1587975398
-  "bibs/refs.bib" 1587975188 823 82c42c6620367eb2b217470f797e1748 ""
+["bibtex paper"] 1587980354 "paper.aux" "paper.bbl" "paper" 1587980610
+  "bibs/refs.bib" 1587980353 1586 914a8ebb44865d539573e63878efeaa1 ""
   "e:/kdehaan/texlive/2019/texmf-dist/bibtex/bst/IEEEtran/IEEEtran.bst" 1570479186 57748 7c8250ecf02814ce6ddc0cdbb63df1dd ""
-  "paper.aux" 1587975397 1034 90895f833f6bac5032c5b0de308de66e "pdflatex"
+  "paper.aux" 1587980609 1244 d90b3cd780f8bff10ce3befc8e6e6219 "pdflatex"
   (generated)
   "paper.blg"
   "paper.bbl"
-["pdflatex"] 1587975396 "e:/kdehaan/Repositories/Credit-Fraud-ML/paper/paper.tex" "e:/kdehaan/Repositories/Credit-Fraud-ML/paper/paper.pdf" "paper" 1587975398
+["pdflatex"] 1587980608 "e:/kdehaan/Repositories/Credit-Fraud-ML/paper/paper.tex" "e:/kdehaan/Repositories/Credit-Fraud-ML/paper/paper.pdf" "paper" 1587980610
   "IEEEtran.cls" 1586742741 281956 2beb42b4cab1c308b5e338af83802592 ""
-  "e:/kdehaan/Repositories/Credit-Fraud-ML/paper/paper.aux" 1587975397 1034 90895f833f6bac5032c5b0de308de66e ""
-  "e:/kdehaan/Repositories/Credit-Fraud-ML/paper/paper.tex" 1587975395 3325 9b3545d3155b75433fbba22f20620790 ""
+  "e:/kdehaan/Repositories/Credit-Fraud-ML/paper/paper.aux" 1587980609 1244 d90b3cd780f8bff10ce3befc8e6e6219 ""
+  "e:/kdehaan/Repositories/Credit-Fraud-ML/paper/paper.tex" 1587980607 5069 622a9331446b01a95874da73c8dfc0bb ""
   "e:/kdehaan/texlive/2019/texmf-dist/fonts/enc/dvips/base/8r.enc" 1570480726 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "e:/kdehaan/texlive/2019/texmf-dist/fonts/map/fontname/texfonts.map" 1570481198 3332 103109f5612ad95229751940c61aada0 ""
   "e:/kdehaan/texlive/2019/texmf-dist/fonts/tfm/adobe/times/ptmb7t.tfm" 1570484808 2172 fd0c924230362ff848a33632ed45dc23 ""
@@ -86,12 +86,12 @@
   "e:/kdehaan/texlive/2019/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1570485602 4694144 80d22e311c019a5e70ac37353a1760f8 ""
   "e:/kdehaan/texlive/2019/texmf-var/web2c/pdftex/pdflatex.fmt" 1570485766 4293254 9328b6424c346300545b10c40bb225d7 ""
   "e:/kdehaan/texlive/2019/texmf.cnf" 1570485571 673 4ae7b2f49cee444c5343a45b5d0f169c ""
-  "paper.aux" 1587975397 1034 90895f833f6bac5032c5b0de308de66e "pdflatex"
-  "paper.bbl" 1587975192 1526 9abd148167155096c7a78a2499aa1735 "bibtex paper"
-  "paper.tex" 1587975395 3325 9b3545d3155b75433fbba22f20620790 ""
+  "paper.aux" 1587980609 1244 d90b3cd780f8bff10ce3befc8e6e6219 "pdflatex"
+  "paper.bbl" 1587980355 2159 a666efb467a185a2b0083b62c4e91075 "bibtex paper"
+  "paper.tex" 1587980607 5069 622a9331446b01a95874da73c8dfc0bb ""
   (generated)
-  "e:/kdehaan/Repositories/Credit-Fraud-ML/paper/paper.log"
-  "paper.pdf"
-  "paper.aux"
-  "paper.log"
   "e:/kdehaan/Repositories/Credit-Fraud-ML/paper/paper.pdf"
+  "paper.pdf"
+  "paper.log"
+  "paper.aux"
+  "e:/kdehaan/Repositories/Credit-Fraud-ML/paper/paper.log"

@@ -21,11 +21,26 @@
 \providecommand{\BIBdecl}{\relax}
 \BIBdecl
 
+\bibitem{mehrotra_ruttley_2006}
+R.~Mehrotra and J.~Ruttley, \emph{Revenue management}.\hskip 1em plus 0.5em
+  minus 0.4em\relax American Hotel and Lodging Association, 2006.
+
+\bibitem{morales2010}
+D.~Romero~Morales and J.~Wang, ``Forecasting cancellation rates for services
+  booking revenue management using data mining,'' \emph{European Journal of
+  Operational Research}, vol. 202, pp. 554--562, 04 2010.
+
 \bibitem{Antonio2019}
 \BIBentryALTinterwordspacing
 N.~Antonio, A.~de~Almeida, and L.~Nunes, ``Hotel booking demand datasets,''
   \emph{Data in Brief}, vol.~22, pp. 41--49, Feb. 2019. [Online]. Available:
   \url{https://doi.org/10.1016/j.dib.2018.11.126}
+\BIBentrySTDinterwordspacing
+
+\bibitem{mock_bichat}
+\BIBentryALTinterwordspacing
+A.~B. Thomas~Mock, ``\#tidytuesday: Hotels,'' feb 2019. [Online]. Available:
+  \url{https://www.kaggle.com/jessemostipak/hotel-booking-demand}
 \BIBentrySTDinterwordspacing
 
 \bibitem{scikit-learn}

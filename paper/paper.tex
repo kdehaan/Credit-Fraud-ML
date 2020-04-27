@@ -39,22 +39,19 @@ T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \end{abstract}
 
 \begin{IEEEkeywords}
-  Machine Learning; Hotel Booking Cancellation; K-nearest Neighbors; Linear SGD; Multi-layer Perceptron; Scikit-learn
+  Data Science; Hospitality Industry; Machine Learning; K-nearest Neighbors; Linear SGD; Multi-layer Perceptron; Scikit-learn
 \end{IEEEkeywords}
 
 
 \section{Introduction}
- 
-% \begin{itemize}
-%   \item 
-%   \item 
-%   \item 
-% \end{itemize}
-
+  In the hospitality industry, it is paramount to maximize occupancy rates. Cancellations can have a significant impact on revenue, and to compensate many hotels often sell above their capacity\cite{mehrotra_ruttley_2006}. While this practice is often worthwhile, it can have significant costs in relocation, compensation and reputation. Having the ability to predict the likelihood of cancellation on a case-by-case basis has significant impact on reducing the risk and improving the margins involved with overbooking a hotel or resort\cite{morales2010}. One might expect that the factors leading to cancelling a hotel reservation would extremely complicated, akin to predicting the weather; however, the majority of cancelled bookings are in fact predictable given a relatively small subset of information. Using the hotel booking data set created by Antonio, de Almeida and Nunes\cite{Antonio2019} we will investigate the utility of three off-the-shelf machine learning algorithms for predicting the outcome of a hotel reservation.
 
 \section{Problem Formulation}
-  \subsection{Input and Output}
+  Simply put, the goal of each of the machine learning models used is to take in a set of parameters that can be known before the date of arrival, and make a binary prediction about whether the reservation is going to be cancelled.
   \subsection{The Data}
+    The data set used is adapted from one created by Antonio, de Almeida and Nunes\cite{Antonio2019} that has been cleaned and formatted by Mock and Bichat\cite{mock_bichat}. It includes bookings from two locations - a city hotel and a resort hotel. Data columns include the lead time between booking and the date of stay, the date of arrival, the duration of the stay, the volume of adults, children and babies, if the guest is a repeat customer, the number of previous cancellations and amount of special requests made, among others.
+  \subsection{Input and Output}
+  
 
 \section{Approaches and Baselines}
   For the purposes of this experiment, three machine learning approaches will be evaluated:
