@@ -21,39 +21,18 @@
 \providecommand{\BIBdecl}{\relax}
 \BIBdecl
 
-\bibitem{Pozzolo:2015}
-A.~D. Pozzolo and G.~Bontempi, ``Adaptive machine learning for credit card
-  fraud detection,'' 2015.
+\bibitem{Antonio2019}
+\BIBentryALTinterwordspacing
+N.~Antonio, A.~de~Almeida, and L.~Nunes, ``Hotel booking demand datasets,''
+  \emph{Data in Brief}, vol.~22, pp. 41--49, Feb. 2019. [Online]. Available:
+  \url{https://doi.org/10.1016/j.dib.2018.11.126}
+\BIBentrySTDinterwordspacing
 
-\bibitem{Pozzolo:2015-2}
-A.~Dal~Pozzolo, O.~Caelen, R.~Johnson, and G.~Bontempi, ``Calibrating
-  probability wit`h undersampling for unbalanced classification,'' 12 2015.
-
-\bibitem{Pozzolo:2014}
-A.~Dal~Pozzolo, O.~Caelen, Y.-A. Le~Borgne, S.~Waterschoot, and G.~Bontempi,
-  ``Learned lessons in credit card fraud detection from a practitioner
-  perspective,'' \emph{Expert Systems with Applications}, vol.~41, p.
-  4915–4928, 08 2014.
-
-\bibitem{Pozzolo:2017}
-A.~Dal~Pozzolo, G.~Boracchi, O.~Caelen, C.~Alippi, and G.~Bontempi, ``Credit
-  card fraud detection: A realistic modeling and a novel learning strategy,''
-  \emph{IEEE Transactions on Neural Networks and Learning Systems}, vol.~PP,
-  pp. 1--14, 09 2017.
-
-\bibitem{Carcillo:2017}
-F.~Carcillo, A.~Dal~Pozzolo, Y.-A. Le~Borgne, O.~Caelen, Y.~Mazzer, and
-  G.~Bontempi, ``Scarff : a scalable framework for streaming credit card fraud
-  detection with spark,'' \emph{Information Fusion}, vol.~41, 09 2017.
-
-\bibitem{Lebichot:2019}
-B.~Lebichot, Y.-A. Le~Borgne, L.~He, F.~Oblé, and G.~Bontempi,
-  \emph{Deep-Learning Domain Adaptation Techniques for Credit Cards Fraud
-  Detection}, 01 2019, pp. 78--88.
-
-\bibitem{Carcillo:2019}
-F.~Carcillo, Y.-A. Le~Borgne, O.~Caelen, Y.~Kessaci, F.~Oblé, and G.~Bontempi,
-  ``Combining unsupervised and supervised learning in credit card fraud
-  detection,'' \emph{Information Sciences}, 05 2019.
+\bibitem{scikit-learn}
+F.~Pedregosa, G.~Varoquaux, A.~Gramfort, V.~Michel, B.~Thirion, O.~Grisel,
+  M.~Blondel, P.~Prettenhofer, R.~Weiss, V.~Dubourg, J.~Vanderplas, A.~Passos,
+  D.~Cournapeau, M.~Brucher, M.~Perrot, and E.~Duchesnay, ``Scikit-learn:
+  Machine learning in {P}ython,'' \emph{Journal of Machine Learning Research},
+  vol.~12, pp. 2825--2830, 2011.
 
 \end{thebibliography}
