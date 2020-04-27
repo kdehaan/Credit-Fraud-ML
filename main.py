@@ -177,11 +177,10 @@ def get_knn(x_train, t_train, x_val, t_val, search=False):
     # KNN tested at (array([0.88484087, 0.88107203, 0.89007538, 0.88628272, 0.89256545]), 0.6603707265070087, 0.9209732808442919)
     if search:
         knn_params = param_sel(x_train, t_train, KNeighborsClassifier(), {
-            'n_neighbors': [ 3, 5, 10, 15, 20],
+            'n_neighbors': [ 3, 10, 20],
             'weights': ['uniform', 'distance'],
-            'algorithm': ['ball_tree', 'kd_tree', 'auto'],
-            'p': [1, 2],
-            'leaf_size': [25, 30, 35] })
+            'algorithm': ['ball_tree', 'kd_tree',],
+            'p': [1, 2]})
     else:
         knn_params = {'algorithm': 'kd_tree', 'leaf_size': 30, 'n_neighbors': 20, 'p': 1, 'weights': 'distance'}
 
@@ -199,11 +198,11 @@ def get_sgd(x_train, t_train, x_val, t_val, search=False):
     # SGD tested at (array([0.5211474 , 0.75460637, 0.42106365, 0.84335079, 0.82848168]), 0.5295225644352521)
     if search:
         sgd_params = param_sel(x_train, t_train, SGDClassifier(max_iter=2000), {
-            'alpha': [ 0.001, 0.006, 0.01, 0.06, 0.1, 0.6, 1],
+            'alpha': [ 0.01, 0.06, 0.1, 0.6, 1],
             'loss': ['hinge', 'log', 'squared_hinge', 'modified_huber'],
             'penalty': ['l2'] })
     else:
-        sgd_params = {'alpha': 0.1, 'loss': 'hinge', 'penalty': 'l2'}
+        sgd_params = {'alpha': 0.1, 'loss': 'squared_hinge', 'penalty': 'l2'}
 
 
     sgd_classifier = SGDClassifier(**sgd_params, max_iter=2000)
