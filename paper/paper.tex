@@ -61,7 +61,7 @@ T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
     \item A \textbf{Multi-layer Perceptron} (MLP) is a feedforward neural network consisting of (at least) an input layer, a hidden layer, and an output layer of nodes (or \emph{perceptrons}). As a nonlinear classifier (and unlike the linear SVM), the MLP model is capable of correctly predicting the classes of data that is not linearly separable. With the selected hyperparameters, this MLP uses a \emph{rectified linear unit} (RELU) activation function and the \emph{adaptive moment estimation} (\emph{Adam}) optimization algorithm. \emph{Adam} is an improved version of stochastic gradient descent which maintains a learning rate for each network parameter instead of all weight updates as a whole\cite{Kingma2015AdamAM}. Additionally, it considers estimates of the first and second moments of the learning rate gradients\cite{Kingma2015AdamAM}.
   \end{itemize}
   For each of these approaches, hyperparameter selection was performed using a search through a parameter grid.
-  
+
   In addition to the machine learning techniques employed, a baseline must be established. As this is a \emph{k}-category classification problem, each approach will be compared to two naive baseline predictors:
   \begin{itemize}
     \item \textbf{Majority Guess} will always predict that a booking will not be cancelled.
@@ -73,6 +73,7 @@ T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
  While the relatively low class imbalance of this binary classification problem means that raw accuracy is still meaningful, it is still preferable to find a different metric to better represent the trade-off between precision and recall. Towards this end, the models are evaluated primarily using the \emph{Area Under the Receiver Operating Characteristic Curve} (ROC AUC), a tool used specifically for determining the predictive ability of a binary classifier as the threshold between precision and recall is varied\cite{Fawcett2006}. For this metric, a perfect score is 1 while the worst possible score is 0.5 (this is because in a binary classifier, being 0\% correct is equivalent to being 100\% correct). In addition to the ROC AUC, the \emph{f\textsubscript{1}} score\cite{rijsbergen_1995} and raw accuracy are also included in the event that the reader is more comfortable with their relative values.
  
  Note that both of the naive predictors (\emph{majority guess} and \emph{uniform random guess}) will produce an ROC AUC score of very nearly 0.5, and very poor \emph{f\textsubscript{1}} scores (0 and 0.425 respectively).
+ 
 \section{Results}
 
 % \begin{figure}

@@ -82,25 +82,25 @@ def main():
         knn_classifier = get_knn(x_train, t_train, x_val, t_val, search)
         print("KNN tested at", validate(knn_classifier, x_test, t_test))
         if (save_plots):
-            plot_auc("KNN", t_test, knn_classifier.predict(x_test))
-            plot_prec_rec("KNN", t_test, knn_classifier.predict(x_test))
-            plot_learning_curve(knn_classifier, "KNN", x_train, t_train)
+            plot_auc("KNN", t_val, knn_classifier.predict(x_val))
+            plot_prec_rec("KNN", t_val, knn_classifier.predict(x_val))
+            # plot_learning_curve(knn_classifier, "KNN", x_train, t_train)
 
     if all_models or 'sgd' in subset:    
         sgd_classifier = get_sgd(x_train, t_train, x_val, t_val, search)
         print("SGD tested at", validate(sgd_classifier, x_test, t_test))
         if (save_plots):
-            plot_auc("SGD", t_test, sgd_classifier.predict(x_test))
-            plot_prec_rec("SGD", t_test, sgd_classifier.predict(x_test))
-            plot_learning_curve(sgd_classifier, "SGD", x_train, t_train)
+            plot_auc("SGD", t_val, sgd_classifier.predict(x_val))
+            plot_prec_rec("SGD", t_val, sgd_classifier.predict(x_val))
+            # plot_learning_curve(sgd_classifier, "SGD", x_train, t_train)
 
     if all_models or 'mlp' in subset:   
         mlp_classifier = get_mlp(x_train, t_train, x_val, t_val, search)
         print("MLP tested at", validate(mlp_classifier, x_test, t_test))
         if (save_plots):
-            plot_auc("MLP", t_test, mlp_classifier.predict(x_test))
-            plot_prec_rec("MLP", t_test, mlp_classifier.predict(x_test))
-            plot_learning_curve(mlp_classifier, "MLP", x_train, t_train)
+            plot_auc("MLP", t_val, mlp_classifier.predict(x_val))
+            plot_prec_rec("MLP", t_val, mlp_classifier.predict(x_val))
+            # plot_learning_curve(mlp_classifier, "MLP", x_train, t_train)
 
     majority_guess = get_majority(x_train, t_train)
     uniform_guess = get_uniform(x_train, t_train)
