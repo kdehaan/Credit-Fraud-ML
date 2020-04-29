@@ -25,7 +25,7 @@ def readCSV():
     titles = data[0]
     data = np.array(data[1:])
     
-
+    # pylint: disable=unsubscriptable-object
     end_idx = data.shape[1]-1
     for i in range(end_idx+1):
         try:
@@ -84,7 +84,7 @@ def main():
         if (save_plots):
             plot_auc("KNN", t_test, knn_classifier.predict(x_test))
             plot_prec_rec("KNN", t_test, knn_classifier.predict(x_test))
-            # plot_learning_curve(knn_classifier, "KNN", x_train, t_train)
+            plot_learning_curve(knn_classifier, "KNN", x_train, t_train)
 
     if all_models or 'sgd' in subset:    
         sgd_classifier = get_sgd(x_train, t_train, x_val, t_val, search)
@@ -92,7 +92,7 @@ def main():
         if (save_plots):
             plot_auc("SGD", t_test, sgd_classifier.predict(x_test))
             plot_prec_rec("SGD", t_test, sgd_classifier.predict(x_test))
-            # plot_learning_curve(sgd_classifier, "SGD", x_train, t_train)
+            plot_learning_curve(sgd_classifier, "SGD", x_train, t_train)
 
     if all_models or 'mlp' in subset:   
         mlp_classifier = get_mlp(x_train, t_train, x_val, t_val, search)
@@ -100,7 +100,7 @@ def main():
         if (save_plots):
             plot_auc("MLP", t_test, mlp_classifier.predict(x_test))
             plot_prec_rec("MLP", t_test, mlp_classifier.predict(x_test))
-            # plot_learning_curve(mlp_classifier, "MLP", x_train, t_train)
+            plot_learning_curve(mlp_classifier, "MLP", x_train, t_train)
 
     majority_guess = get_majority(x_train, t_train)
     uniform_guess = get_uniform(x_train, t_train)
@@ -177,7 +177,7 @@ def get_knn(x_train, t_train, x_val, t_val, search=False):
     # KNN tested at (array([0.88484087, 0.88107203, 0.89007538, 0.88628272, 0.89256545]), 0.6603707265070087, 0.9209732808442919)
     if search:
         knn_params = param_sel(x_train, t_train, KNeighborsClassifier(), {
-            'n_neighbors': [ 3, 10, 20],
+            'n_neighbors': [ 1, 3, 5, 10, 20],
             'weights': ['uniform', 'distance'],
             'algorithm': ['ball_tree', 'kd_tree',],
             'p': [1, 2]})
@@ -226,7 +226,7 @@ def get_mlp(x_train, t_train, x_val, t_val, search=False):
     if search:
 
         mlp_params = param_sel(x_train, t_train, MLPClassifier(max_iter=1000), {
-            'alpha': [ 0.01, 0.06, 0.1, 0.6],
+            'alpha': [ 0.06, 0.1,],
             'hidden_layer_sizes': [(20,20,10), (100,)],
             'activation': ['relu', 'tanh'],
             'solver': ['sgd', 'adam'],

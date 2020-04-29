@@ -8,9 +8,14 @@
         "Scikit",
         "Voronoi",
         "astype",
+        "prec",
+        "pylint",
         "pyplot",
+        "relu",
         "sklearn",
         "textsubscript",
-        "timeit"
+        "timeit",
+        "xlabel",
+        "ylabel"
     ]
 }

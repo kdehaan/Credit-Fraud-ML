@@ -69,7 +69,7 @@ T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \section{Evaluating Performance}
  While the relatively low class imbalance of this binary classification problem means that raw accuracy is still meaningful, it is still preferable to find a different metric to better represent the trade-off between precision and recall. Towards this end, the models are evaluated primarily using the \emph{Area Under the Receiver Operating Characteristic Curve} (ROC AUC), a tool used specifically for determining the predictive ability of a binary classifier as the threshold between precision and recall is varied\cite{Fawcett2006}. For this metric, a perfect score is 1 while the worst possible score is 0.5 (this is because in a binary classifier, being 0\% correct is equivalent to being 100\% correct). In addition to the ROC AUC, the \emph{f\textsubscript{1}} score\cite{rijsbergen_1995} and raw accuracy are also included in the event that the reader is more comfortable with their relative values.
  
- Note that both of the naive predictors (\emph{majority guess} and \emph{uniform random guess}) will produce an ROC AUC score of very nearly 0.5, and an \emph{f\textsubscript{1}} score of 
+ Note that both of the naive predictors (\emph{majority guess} and \emph{uniform random guess}) will produce an ROC AUC score of very nearly 0.5, and very poor \emph{f\textsubscript{1}} scores (0 and 0.425 respectively).
 \section{Results}
 
 % \begin{figure}
