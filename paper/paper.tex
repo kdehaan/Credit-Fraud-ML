@@ -5,10 +5,14 @@
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{algorithmic}
 \usepackage{graphicx}
+% \usepackage{subcaption}
+% \usepackage{subfig}
 \usepackage{textcomp}
 \usepackage{xcolor}
 \usepackage{subfig}
 \usepackage{listings}
+
+% \usepackage{subcaption}
 \lstset{numbers=left,stepnumber=1,basicstyle=\footnotesize\ttfamily}
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
 T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
@@ -35,7 +39,7 @@ T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \maketitle
 
 \begin{abstract}
- Hotels around the world have dealt with cancellations since their inception. Reservations require that a space be set aside, and cancellations mean that even the most consistently popular vacation destinations are often floating unused rooms and wasted space. Being able to predict whether a customer is likely to cancel ahead of time allows establishments to operate on significantly tighter occupancy margins, improving their efficiency and freeing up more space for customers who will follow through on their plans. The nature of this binary classification problem is well suited to simple machine learning strategies; however, more advanced techniques still have the opportunity to clearly demonstrate their ability.
+ Hotels around the world have dealt with cancellations since their inception. Reservations require that a space be set aside, and cancellations mean that even the most consistently popular vacation destinations are often floating unused rooms and wasted space. Being able to predict whether a customer is likely to cancel ahead of time allows establishments to operate on significantly tighter occupancy margins, improving their efficiency and freeing up more space for customers who will follow through on their plans. The nature of this binary classification problem is well suited to many simple machine learning strategies.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -73,15 +77,56 @@ T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
  While the relatively low class imbalance of this binary classification problem means that raw accuracy is still meaningful, it is still preferable to find a different metric to better represent the trade-off between precision and recall. Towards this end, the models are evaluated primarily using the \emph{Area Under the Receiver Operating Characteristic Curve} (ROC AUC), a tool used specifically for determining the predictive ability of a binary classifier as the threshold between precision and recall is varied\cite{Fawcett2006}. For this metric, a perfect score is 1 while the worst possible score is 0.5 (this is because in a binary classifier, being 0\% correct is equivalent to being 100\% correct). In addition to the ROC AUC, the \emph{f\textsubscript{1}} score\cite{rijsbergen_1995} and raw accuracy are also included in the event that the reader is more comfortable with their relative values.
  
  Note that both of the naive predictors (\emph{majority guess} and \emph{uniform random guess}) will produce an ROC AUC score of very nearly 0.5, and very poor \emph{f\textsubscript{1}} scores (0 and 0.425 respectively).
- 
+
 \section{Results}
 
-% \begin{figure}
-%   \includegraphics[width=0.5\textwidth]{figures/}
-%   \label{}
-% \end{figure}
+\begin{figure}
+  \centering
+  \subfloat[KNN\label{knn_learn}]{\includegraphics[width=0.25\textwidth]{figures/KNN_learning_curve.png}} \\
+  \subfloat[SGD SVM\label{sgd_learn}]{\includegraphics[width=0.25\textwidth]{figures/SGD_learning_curve.png}}
+  \subfloat[MLP\label{mlp_learn}]{\includegraphics[width=0.25\textwidth]{figures/MLP_learning_curve.png}}
+  \caption{Learning Curves}
+  \label{learning_curves}
+\end{figure}
+
+In training, the KNN predictor benefited most from increasingly large amounts of training examples as seen in figure \ref{knn_learn}. The SVM demonstrated little improvement with additional training examples, possibly due to the data set being fundamentally non-linear. Finally, while the MLP at first glance appears to have been wildly fluctuating, note that the bounds of figure \ref{mlp_learn} are over a smaller interval than that of the linear classifier.
+
+\begin{figure}
+  \centering
+  \subfloat[KNN\label{knn_roc}]{\includegraphics[width=0.25\textwidth]{figures/KNN_roc_auc.png}} \\
+  \subfloat[SGD SVM\label{sgd_roc}]{\includegraphics[width=0.25\textwidth]{figures/SGD_roc_auc.png}}
+  \subfloat[MLP\label{mlp_roc}]{\includegraphics[width=0.25\textwidth]{figures/MLP_roc_auc.png}}
+  \caption{Receiver Operating Characteristic (ROC) Curves}
+  \label{roc_plot}
+\end{figure}
+
+Figures \ref{knn_roc} and \ref{mlp_roc} display highly similar tradeoff curves between true positives and false positives, as well as highly similar values for the area under the receiver operating characteristic curve (ROC AUC), the primary performance metric used during training. Of note, in the intermediate point of each curve the KNN has a tendency towards a lower false positive rate while the MLP displays a better true positive rate. The linear classifier in figure \ref{sgd_roc} does a reasonable job at avoiding false positives yet fails to classify true positives as well as the other models, performing noticeably worse overall.
+
+
+\begin{table}
+  \centering
+  \begin{tabular}{c|c c c}
+    & ROC AUC & \emph{f\textsubscript{1}} Score & Accuracy \\
+    \hline
+    \hline
+    KNN & 0.818 & 0.772 & 0.838 \\
+    SGD & 0.732 & 0.645 & 0.785 \\
+    MLP & 0.810 & 0.758 & 0.804 \\
+    \hline
+    Majority & 0.500 & 0.000 & 0.631 \\
+    Uniform & 0.499 & 0.424 & 0.499 \\
+
+  \end{tabular}
+  \caption{Test performance of the three sampled classifiers. For each performance metric, values closer to 1 are preferable.}
+  \label{resultsummary}
+\end{table}
 
 \section{Conclusion}
+  While all three of the models performed significantly better than both of the baseline estimators, it is curious to observe that the \emph{k}-nearest Neighbors algorithm outperformed both of the other two classification engines, even if only slightly in the case of the MLP classifier. In the case of the SGD-trained linear classifier this is best explained by the problem set simply not being linearly separable and therefore impossible to obtain a perfect model of the situation. However, the MLP should generally be able to outperform the KNN model in most cases, and it is likely that the greatest limiting factor in this instance was my own skill and experience with hyperparameter tuning. The SGD-trained linear classifier would also almost certainly benefit from a more experienced touch, while the KNN system is likely simple enough to have little tuning required.
+
+  Even considering the slightly reduced effectiveness of the amateur MLP compared to the KNN classifier, it would likely be preferable to use the MLP in any sort of real applications due to the fact that it is significantly less computationally expensive to use as a classifier once trained, as well as being more flexible to the introduction of additional data columns. 
+
+  Ultimately, while the exhibited performance likely has significant room for improvement, a classifier such as the KNN or MLP models trained in this experiment would still be a very powerful tool for any hotel attempting to practice efficient overbooking - being able to predict individual bookings at 80\% accuracy is a drastic improvement compared to simply assuming 34\% of bookings will be cancelled.
 
 \nocite{*}
 \bibliography{bibs/refs}
