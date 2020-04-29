@@ -43,6 +43,10 @@ A.~B. Thomas~Mock, ``\#tidytuesday: Hotels,'' Feb. 2019. [Online]. Available:
   \url{https://www.kaggle.com/jessemostipak/hotel-booking-demand}
 \BIBentrySTDinterwordspacing
 
+\bibitem{Kingma2015AdamAM}
+D.~P. Kingma and J.~Ba, ``Adam: A method for stochastic optimization,''
+  \emph{CoRR}, vol. abs/1412.6980, 2015.
+
 \bibitem{Fawcett2006}
 \BIBentryALTinterwordspacing
 T.~Fawcett, ``An introduction to {ROC} analysis,'' \emph{Pattern Recognition
